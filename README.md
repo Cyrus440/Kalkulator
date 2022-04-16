@@ -1,6 +1,6 @@
 # Kalkulator
-- proste obliczenia matematyczne
+- Proste obliczenia matematyczne
 - Funkcje trygonometryczne
-- wskaźnik bmi (obliczyć i określić)
-- wykres funkcji trygonometrycznych o nadanych współczynnikach
-- operacje na plikach
+- Wskaźnik bmi (obliczyć i określić)
+- Wykres funkcji trygonometrycznych o nadanych współczynnikach
+- Operacje na plikach
