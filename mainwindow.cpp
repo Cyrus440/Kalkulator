@@ -11,6 +11,9 @@ bool subTrigger = false;
 bool sinTrigger = false;
 bool cosTrigger = false;
 bool tanTrigger = false;
+bool powTrigger = false;
+bool sqrtTrigger = false;
+bool bmiTrigger = false;
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -35,6 +38,10 @@ MainWindow::MainWindow(QWidget *parent)
             SLOT(MathButtonPressed()));
     connect(ui->Divide, SIGNAL(released()), this,
             SLOT(MathButtonPressed()));
+    connect(ui->Power, SIGNAL(released()), this,
+            SLOT(MathButtonPressed()));
+    connect(ui->Sqrt, SIGNAL(released()), this,
+            SLOT(MathButtonPressed()));
 
     connect(ui->Equals, SIGNAL(released()), this,
             SLOT(EqualButtonPressed()));
@@ -48,6 +55,9 @@ MainWindow::MainWindow(QWidget *parent)
             SLOT(TrygButtonPressed()));
     connect(ui->tan, SIGNAL(released()), this,
             SLOT(TrygButtonPressed()));
+
+    connect(ui->BMI, SIGNAL(released()), this,
+            SLOT(BMIButtonPressed()));
 }
 
 MainWindow::~MainWindow()
@@ -73,6 +83,8 @@ void MainWindow::MathButtonPressed(){
     multTrigger = false;
     addTrigger = false;
     subTrigger = false;
+    powTrigger = false;
+    sqrtTrigger = false;
     QString displayVal= ui->Display->text();
     calcVal = displayVal.toDouble();
     QPushButton *button = (QPushButton *)sender();
@@ -83,8 +95,12 @@ void MainWindow::MathButtonPressed(){
         multTrigger = true;
     } else if(QString::compare(butVal, "+", Qt::CaseInsensitive) == 0){
         addTrigger = true;
-    } else{
+    } else if(QString::compare(butVal, "-", Qt::CaseInsensitive) == 0){
         subTrigger = true;
+    } else if(QString::compare(butVal, "^x", Qt::CaseInsensitive) == 0){
+        powTrigger = true;
+    } else{
+        sqrtTrigger = true;
     }
     ui->Display->setText("");
 }
@@ -93,7 +109,7 @@ void MainWindow::EqualButtonPressed(){
     double solution = 0.0;
     QString displayVal = ui->Display->text();
     double dblDisplayValue = displayVal.toDouble();
-    if(addTrigger || subTrigger || multTrigger || divTrigger || sinTrigger || cosTrigger || tanTrigger){
+    if(addTrigger || subTrigger || multTrigger || divTrigger || sinTrigger || cosTrigger || tanTrigger || powTrigger || sqrtTrigger || bmiTrigger){
         if(addTrigger){
             solution = calcVal + dblDisplayValue;
         }else if(subTrigger){
@@ -106,8 +122,14 @@ void MainWindow::EqualButtonPressed(){
             solution = qSin(dblDisplayValue);
         }else if(cosTrigger){
             solution = qCos(dblDisplayValue);
-        }else{
+        }else if(tanTrigger){
             solution = qTan(dblDisplayValue);
+        }else if(powTrigger){
+            solution = qPow(calcVal, dblDisplayValue);
+        }else if(sqrtTrigger){
+            solution = qSqrt(calcVal);
+        }else{
+            solution = calcVal / (qPow(dblDisplayValue/100 , 2));
         }
     }
     ui->Display->setText(QString::number(solution));
@@ -138,4 +160,17 @@ void MainWindow::TrygButtonPressed(){
     }else{
         tanTrigger = true;
     }
+    ui->Display->setText("");
+}
+
+void MainWindow::BMIButtonPressed(){
+    bmiTrigger = false;
+    QString displayVal = ui->Display->text();
+    calcVal = displayVal.toDouble();
+    QPushButton *button = (QPushButton *)sender();
+    QString butVal = button->text();
+    if(QString::compare(butVal, "BMI", Qt::CaseInsensitive) == 0){
+        bmiTrigger = true;
+    }
+    ui->Display->setText("");
 }

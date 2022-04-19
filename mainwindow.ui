@@ -156,7 +156,7 @@
      </widget>
     </item>
     <item row="1" column="5">
-     <widget class="QPushButton" name="power">
+     <widget class="QPushButton" name="Power">
       <property name="text">
        <string>^x</string>
       </property>
@@ -179,6 +179,13 @@
      <widget class="QPushButton" name="Sqrt">
       <property name="text">
        <string>Sqrt</string>
+      </property>
+     </widget>
+    </item>
+    <item row="3" column="5">
+     <widget class="QPushButton" name="BMI">
+      <property name="text">
+       <string>BMI</string>
       </property>
      </widget>
     </item>

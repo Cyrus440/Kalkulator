@@ -24,5 +24,6 @@ private slots:
     void EqualButtonPressed();
     void ChangeNumberSign();
     void TrygButtonPressed();
+    void BMIButtonPressed();
 };
 #endif // MAINWINDOW_H
