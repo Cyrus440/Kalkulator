@@ -58,6 +58,8 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(ui->BMI, SIGNAL(released()), this,
             SLOT(BMIButtonPressed()));
+    connect(ui->Clear, SIGNAL(released()), this,
+            SLOT(ClearButtonPressed()));
 }
 
 MainWindow::~MainWindow()
@@ -112,27 +114,55 @@ void MainWindow::EqualButtonPressed(){
     if(addTrigger || subTrigger || multTrigger || divTrigger || sinTrigger || cosTrigger || tanTrigger || powTrigger || sqrtTrigger || bmiTrigger){
         if(addTrigger){
             solution = calcVal + dblDisplayValue;
+            ui->Display->setText(QString::number(solution));
         }else if(subTrigger){
             solution = calcVal - dblDisplayValue;
+            ui->Display->setText(QString::number(solution));
         }else if(multTrigger){
             solution = calcVal * dblDisplayValue;
+            ui->Display->setText(QString::number(solution));
         }else if(divTrigger){
             solution = calcVal / dblDisplayValue;
+            ui->Display->setText(QString::number(solution));
         }else if(sinTrigger){
             solution = qSin(dblDisplayValue);
+            ui->Display->setText(QString::number(solution));
         }else if(cosTrigger){
             solution = qCos(dblDisplayValue);
+            ui->Display->setText(QString::number(solution));
         }else if(tanTrigger){
             solution = qTan(dblDisplayValue);
+            ui->Display->setText(QString::number(solution));
         }else if(powTrigger){
             solution = qPow(calcVal, dblDisplayValue);
+            ui->Display->setText(QString::number(solution));
         }else if(sqrtTrigger){
             solution = qSqrt(calcVal);
-        }else{
+            ui->Display->setText(QString::number(solution));
+        }else if(bmiTrigger){
             solution = calcVal / (qPow(dblDisplayValue/100 , 2));
+            if (solution < 16){
+                ui->Display->setText(QString::number(solution) + " - wyglodzenie");
+            }else if((solution >= 16) && (solution <= 16.99) ){
+                ui->Display->setText(QString::number(solution) + " - wychudzenie");
+            }else if((solution >= 17) && (solution <= 18.49) ){
+                ui->Display->setText(QString::number(solution) + " - niedowaga");
+            }else if((solution >= 18.50) && (solution <= 24.99) ){
+                ui->Display->setText(QString::number(solution) + " - poprana waga");
+            }else if((solution >=25 ) && (solution <= 29.99) ){
+                ui->Display->setText(QString::number(solution) + " - nadwaga");
+            }else if((solution >= 30) && (solution <= 34.99) ){
+                ui->Display->setText(QString::number(solution) + " - I st. otylosci");
+            }else if((solution >= 35) && (solution <= 39.99) ){
+                ui->Display->setText(QString::number(solution) + " - II st. otylosci");
+            }else{
+                ui->Display->setText(QString::number(solution) + " - otylosc skrajna");
+            }
+        }else{
+            solution = dblDisplayValue;
         }
     }
-    ui->Display->setText(QString::number(solution));
+    //ui->Display->setText(QString::number(solution));
 }
 
 void MainWindow::ChangeNumberSign(){
@@ -173,4 +203,24 @@ void MainWindow::BMIButtonPressed(){
         bmiTrigger = true;
     }
     ui->Display->setText("");
+}
+void MainWindow::ClearButtonPressed(){
+    QString displayVal = ui->Display->text();
+    calcVal = displayVal.toDouble();
+    QPushButton *button = (QPushButton *)sender();
+    QString butVal = button->text();
+    if(QString::compare(butVal, "AC", Qt::CaseInsensitive) == 0){
+        calcVal = 0.0;
+        divTrigger = false;
+        multTrigger = false;
+        addTrigger = false;
+        subTrigger = false;
+        sinTrigger = false;
+        cosTrigger = false;
+        tanTrigger = false;
+        powTrigger = false;
+        sqrtTrigger = false;
+        bmiTrigger = false;
+    }
+    ui->Display->setText(QString::number(calcVal));
 }
